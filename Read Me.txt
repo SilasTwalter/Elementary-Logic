@@ -1,0 +1,2 @@
+This requires Electron to run. It is currently not apart of the file because it wouldn't upload. Electron can be installed at this website https://www.electronjs.org/
+to run type: npm start

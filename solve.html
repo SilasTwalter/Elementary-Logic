@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Solve Problem</title>
+  <style>
+    body {
+      font-family: 'Garamond', serif;
+      background: #fdf6e3;
+      color: #3b2f2f;
+      padding: 30px;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #5c4033;
+      border-bottom: 2px solid #d4c2a8;
+      padding-bottom: 5px;
+      margin-top: 25px;
+    }
+    input {
+      background: #fffaf0;
+      border: 1px solid #d4c2a8;
+      color: #3b2f2f;
+      padding: 8px;
+      margin: 5px;
+      border-radius: 6px;
+      width: 250px;
+      font-family: 'Georgia', serif;
+    }
+    button {
+      background: #5c4033;
+      border: none;
+      color: #fdf6e3;
+      padding: 8px 15px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-family: 'Georgia', serif;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #8b5e3c;
+    }
+    .proof-board {
+      background: #fffaf0;
+      border: 2px solid #d4c2a8;
+      padding: 20px;
+      margin-top: 20px;
+      font-size: 18px;
+      font-family: 'Georgia', serif;
+      box-shadow: inset 0 0 10px #d4c2a8;
+      height: auto;
+      overflow-y: visible;
+    }
+    .nav {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .nav a {
+      color: #5c4033;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+    .congrats {
+      color: #1f7a1f;
+      font-weight: bold;
+      margin-top: 16px;
+    }
+    .proof-line {
+      font-family: monospace;
+      margin: 4px 0;
+    }
+    .scope {
+      border-left: 3px solid #444;
+      margin-left: 12px;
+      padding-left: 8px;
+      padding-bottom: 6px;
+      position: relative;
+    }
+    .scope .proof-line:first-child {
+      border-bottom: 2px solid #444;
+      padding-bottom: 2px;
+    }
+    .back {
+      display: inline-block;
+      background: #fffaf0;        /* white base */
+      color: #5c4033;             /* brown text */
+      padding: 8px 15px;
+      margin: 5px;
+      border: 2px solid #5c4033;  /* brown border for definition */
+      border-radius: 6px;
+      font-family: 'Georgia', serif;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .back:hover {
+      background: #5c4033;   /* brown hover */
+      color: #fdf6e3;        /* light text for contrast */
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="index.html">🏛 Home</a>
+    <a href="practice.html">📜 Practice Problems</a>
+    <a href="custom.html">⚖ Custom Proofs</a>
+    <a href="tutorial.html">📖 Tutorial</a>
+  </div>
+
+  <h1>⚖ Solve Problem</h1>
+
+  <h2>Problem Setup</h2>
+  <div class="proof-board">
+    <div><strong>Givens:</strong> <span id="givensText">—</span></div>
+    <div><strong>Goal:</strong> <span id="goalText">—</span></div>
+  </div>
+
+  <h2>Make Assumption</h2>
+  <input id="assumption" type="text" placeholder="Assume something (e.g. A)" />
+  <button onclick="makeAssumption()">Assume</button>
+
+  <h3>Derive Lines</h3>
+  <input id="newLine" type="text" placeholder="Derived proposition (e.g. A&B)" />
+  <input id="fromLines" type="text" placeholder="From lines (e.g. 1,2)" />
+  <input id="fromRule" type="text" 
+         placeholder="Rule (&E, &I, >E, >I, =E, =I, ^I, ^E)" />
+  <button onclick="deriveProposition()">Derive</button>
+
+  <h3>Edit</h3>
+  <button onclick="undoLastLine()">Erase Last Line</button>
+
+  <h2>Proof</h2>
+  <div id="errorMessage" role="alert" style="
+  display:none;
+  background:#ffecec;
+  color:#a94442;
+  border:1px solid #f5c6cb;
+  padding:10px;
+  margin:10px 0;
+  border-radius:6px;
+  font-family: Georgia, serif;
+"></div>
+  <div id="displayArgument" class="proof-board"></div>
+
+  <div id="congratsMessage" class="congrats"></div>
+
+  <div style="margin-top:20px;">
+    <a href="practice.html" class="back">← Back to Practice Problems</a>
+  </div>
+
+  <script src="./renderer.js"></script>
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const givenParam = params.get("given") || "";
+      const goalParam = params.get("goal") || "";
+
+      const norm = s => (s || "").replace(/\s+/g, "");
+
+      document.getElementById("givensText").textContent = decodeURIComponent(givenParam || "—");
+      document.getElementById("goalText").textContent = decodeURIComponent(goalParam || "—");
+
+      const givens = (decodeURIComponent(givenParam).trim() || "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      if (Array.isArray(givens)) {
+        givens.forEach(g => {
+          goal.addProposition(new proposition(g));
+        });
+      }
+
+      displayArgument();
+
+      const originalDisplayArgument = displayArgument;
+      window.displayArgument = function() {
+        originalDisplayArgument();
+        checkGoal();
+      };
+function checkGoal() {
+  if (!goalParam) return;
+  const target = norm(decodeURIComponent(goalParam));
+
+  for (const p of goal.proof) {
+    const matchesGoal = norm(p.returnProposition()) === target;
+    const isGlobal = p.scopeId === 0;
+    const isDerived = !p.assumed;
+    const isActive = p.active;
+
+    if (matchesGoal && isGlobal && isDerived && isActive) {
+      document.getElementById("congratsMessage").textContent =
+        "🎉 Congratulations! You derived the goal.";
+      return;
+    }
+  }
+
+  // Clear message if not actually proved globally
+  document.getElementById("congratsMessage").textContent = "";
+}
+    })();
+  </script>
+  
+</body>
+</html>
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Solve Problem</title>
+  <style>
+  body { 
+    font-family: 'Garamond', serif; 
+    background: #fdf6e3; 
+    color: #3b2f2f; 
+    padding: 40px; 
+    line-height: 1.6;
+  }
+  h1, h2 { color: #5c4033; }
+  .meta { 
+    margin-bottom: 20px; 
+    padding: 10px; 
+    background: #fffaf0; 
+    border: 2px solid #d4c2a8; 
+    border-radius: 8px; 
+  }
+  .proof-board { 
+    background: #fffaf0; 
+    border: 2px solid #d4c2a8; 
+    padding: 20px; 
+    margin-top: 20px; 
+    border-radius: 10px; 
+    font-family: 'Georgia', serif;
+    font-size: 18px;
+    box-shadow: inset 0 0 10px #d4c2a8;
+  }
+  .congrats { color: #1f7a1f; font-weight: bold; margin-top: 16px; }
+  .back { margin-top: 20px; display: inline-block; color: #5c4033; text-decoration: none; font-weight: bold; }
+  .back:hover { text-decoration: underline; }
+
+  input {
+    background: #fffaf0;
+    border: 1px solid #d4c2a8;
+    color: #3b2f2f;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 6px;
+    width: 250px;
+    font-family: 'Georgia', serif;
+  }
+
+  button {
+    background: #5c4033;
+    border: none;
+    color: #fdf6e3;
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-family: 'Georgia', serif;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #8b5e3c;
+  }
+</style>
+</head>
+<body>
+  <h1>⚖ Solve Problem</h1>
+
+  <div class="meta">
+    <div><strong>Givens:</strong> <span id="givensText">—</span></div>
+    <div><strong>Goal:</strong> <span id="goalText">—</span></div>
+  </div>
+
+  <h2>Make Assumption</h2>
+  <input id="assumption" type="text" placeholder="Assume something (e.g. A)" />
+  <button onclick="makeAssumption()">Assume</button>
+
+  <h3>Derive Lines</h3>
+  <input id="newLine" type="text" placeholder="Derived proposition (e.g. A&B)" />
+  <input id="fromLines" type="text" placeholder="From lines (e.g. 1,2)" />
+  <input id="fromRule" type="text" placeholder="Rule (&E, &I, >E, >I, =E, =I, ^I, ^E)" />
+  <button onclick="deriveProposition()">Derive</button>
+
+  <h2>Proof Manuscript</h2>
+  <div id="displayArgument" class="proof-board"></div>
+
+  <div id="congratsMessage" class="congrats"></div>
+
+  <a href="practice.html" class="back">← Back to Practice Problems</a>
+
+  <script src="./renderer.js"></script>
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const givenParam = params.get("given") || "";
+      const goalParam = params.get("goal") || "";
+
+      const norm = s => (s || "").replace(/\s+/g, "");
+
+      document.getElementById("givensText").textContent = decodeURIComponent(givenParam || "—");
+      document.getElementById("goalText").textContent = decodeURIComponent(goalParam || "—");
+
+      const givens = (decodeURIComponent(givenParam).trim() || "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      if (Array.isArray(givens)) {
+        givens.forEach(g => {
+          goal.addProposition(new proposition(g));
+        });
+      }
+
+      displayArgument();
+
+      const originalDisplayArgument = displayArgument;
+      window.displayArgument = function() {
+        originalDisplayArgument();
+        checkGoal();
+      };
+
+      function checkGoal() {
+        if (!goalParam) return;
+        const target = norm(decodeURIComponent(goalParam));
+        for (const p of goal.proof) {
+          if (norm(p.returnProposition()) === target) {
+            document.getElementById("congratsMessage").textContent =
+              "🎉 Congratulations! You derived the goal.";
+            return;
+          }
+        }
+      }
+    })();
+  </script>
+</body>
+</html>-->

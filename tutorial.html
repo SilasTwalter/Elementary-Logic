@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Logic Tutorial</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #fdf6e3;
+      color: #3b2f2f;
+      padding: 40px;
+      line-height: 1.7;
+    }
+    h1 {
+      font-size: 36px;
+      color: #5c4033;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px #d4c2a8;
+    }
+    h2 {
+      color: #5c4033;
+      margin-top: 25px;
+      border-bottom: 2px solid #d4c2a8;
+      padding-bottom: 5px;
+    }
+    .section {
+      background: #fffaf0;
+      border: 2px solid #d4c2a8;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: inset 0 0 10px #d4c2a8;
+    }
+    .example {
+      background: #f9f4e7;
+      border-left: 4px solid #5c4033;
+      padding: 10px;
+      margin: 10px 0;
+      font-style: italic;
+    }
+    .nav {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .nav a {
+      color: #5c4033;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background: #5c4033;
+      color: #fdf6e3;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Georgia', serif;
+    }
+    .back-btn:hover {
+      background: #8b5e3c;
+    }
+    .quote {
+      margin-top: 40px;
+      font-style: italic;
+      color: #6b4c3b;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="index.html">🏛 Home</a>
+    <a href="practice.html">📜 Practice Problems</a>
+    <a href="custom.html">⚖ Custom Proofs</a>
+    <a href="tutorial.html">📖 Tutorial</a>
+  </div>
+
+  <h1>📖 Tutorial: How to Work with Logic Proofs</h1>
+
+  <div class="section">
+    <h2>Step 1: Understand Propositions</h2>
+    <p>A proposition is a statement that can be true or false. In logic, we combine them with connectors:</p>
+    <ul>
+      <li><b>∧</b> (and)</li>
+      <li><b>∨</b> (or)</li>
+      <li><b>→</b> (implies)</li>
+      <li><b>↔</b> (if and only if)</li>
+      <li><b>¬</b> (not)</li>
+    </ul>
+    <div class="example">Example: <b>A ∧ B</b> means “A and B are both true.”</div>
+  </div>
+
+  <div class="section">
+    <h2>Step 2: Make Assumptions</h2>
+    <p>Sometimes, to prove a conditional, we assume the antecedent and see what follows. This is called <b>conditional proof</b>.</p>
+    <div class="example">Example: Assume <b>A</b>. If you can derive <b>B</b>, then you can conclude <b>A → B</b>.</div>
+  </div>
+
+  <div class="section">
+    <h2>Step 3: Apply Rules</h2>
+    <p>Inference rules let us move from known propositions to new ones. Here’s how each works in detail:</p>
+
+    <h3>∧E (And Elimination)</h3>
+    <p>If you know <b>A ∧ B</b>, you can take out either part. This is useful for breaking down complex statements.</p>
+    <div class="example">1. A ∧ B (Premise)<br>2. A (from 1, ∧E)<br>3. B (from 1, ∧E)</div>
+
+    <h3>∧I (And Introduction)</h3>
+    <p>If you have both <b>A</b> and <b>B</b> separately, you can combine them into <b>A ∧ B</b>. This builds larger truths from smaller ones.</p>
+    <div class="example">1. A (Premise)<br>2. B (Premise)<br>3. A ∧ B (from 1,2 ∧I)</div>
+
+    <h3>→E (Conditional Elimination / Modus Ponens)</h3>
+    <p>If you know <b>A → B</b> and you also know <b>A</b>, then you can conclude <b>B</b>. This is one of the most powerful rules in logic.</p>
+    <div class="example">1. A → B (Premise)<br>2. A (Premise)<br>3. B (from 1,2 →E)</div>
+
+    <h3>→I (Conditional Introduction)</h3>
+    <p>If assuming <b>A</b> leads you to derive <b>B</b>, then you can conclude <b>A → B</b>. This requires discharging the assumption once the conditional is formed.</p>
+    <div class="example">1. [Assume A]<br>2. B (derived)<br>3. A → B (from 1–2 →I, assumption discharged)</div>
+
+    <h3>↔E (Biconditional Elimination)</h3>
+    <p>If you know <b>A ↔ B</b>, then <b>A</b> and <b>B</b> always go together. From <b>A</b>, you can infer <b>B</b>, and from <b>B</b>, you can infer <b>A</b>.</p>
+    <div class="example">1. A ↔ B (Premise)<br>2. A (Premise)<br>3. B (from 1,2 ↔E)</div>
+
+    <h3>↔I (Biconditional Introduction)</h3>
+    <p>If you can prove both <b>A → B</b> and <b>B → A</b>, then you can conclude <b>A ↔ B</b>.</p>
+    <div class="example">1. A → B (Premise)<br>2. B → A (Premise)<br>3. A ↔ B (from 1,2 ↔I)</div>
+
+    <h3>∨I (Or Introduction)</h3>
+    <p>If you know <b>A</b>, you can always conclude <b>A ∨ B</b> for any <b>B</b>. This is useful for setting up disjunctions.</p>
+    <div class="example">1. A (Premise)<br>2. A ∨ B (from 1 ∨I)</div>
+
+    <h3>∨E (Or Elimination)</h3>
+    <p>If you know <b>A ∨ B</b>, and from assuming <b>A</b> you can derive <b>C</b>, and from assuming <b>B</b> you can also derive <b>C</b>, then you can conclude <b>C</b>.</p>
+    <div class="example">1. A ∨ B (Premise)<br>2. [Assume A] → C<br>3. [Assume B] → C<br>4. C (from 1–3 ∨E)</div>
+
+    <h3>¬I (Negation Introduction)</h3>
+    <p>If assuming <b>A</b> leads to a contradiction, then you can conclude <b>¬A</b>.</p>
+    <div class="example">1. [Assume A]<br>2. … derive contradiction (e.g., B and ¬B)<br>3. ¬A (from 1–2 ¬I)</div>
+
+    <h3>R (Reiteration)</h3>
+    <p>You can restate a line from within an open scope to use it again later. This keeps propositions available across steps.</p>
+    <div class="example">1. A (Premise)<br>2. A (from 1, R)</div>
+  </div>
+    
+<!--<!DOCTYPE html>
+<html>
+<head>
+  <title>Logic Tutorial</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #fdf6e3;
+      color: #3b2f2f;
+      padding: 40px;
+      line-height: 1.7;
+    }
+    h1 {
+      font-size: 36px;
+      color: #5c4033;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px #d4c2a8;
+    }
+    h2 {
+      color: #5c4033;
+      margin-top: 25px;
+      border-bottom: 2px solid #d4c2a8;
+      padding-bottom: 5px;
+    }
+    .section {
+      background: #fffaf0;
+      border: 2px solid #d4c2a8;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: inset 0 0 10px #d4c2a8;
+    }
+    .example {
+      background: #f9f4e7;
+      border-left: 4px solid #5c4033;
+      padding: 10px;
+      margin: 10px 0;
+      font-style: italic;
+    }
+    .nav {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .nav a {
+      color: #5c4033;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background: #5c4033;
+      color: #fdf6e3;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Georgia', serif;
+    }
+    .back-btn:hover {
+      background: #8b5e3c;
+    }
+    .quote {
+      margin-top: 40px;
+      font-style: italic;
+      color: #6b4c3b;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="index.html">🏛 Home</a>
+    <a href="practice.html">📜 Practice Problems</a>
+    <a href="custom.html">⚖ Custom Proofs</a>
+    <a href="tutorial.html">📖 Tutorial</a>
+  </div>
+
+  <h1>📖 Tutorial: How to Work with Logic Proofs</h1>
+
+  <div class="section">
+    <h2>Step 1: Understand Propositions</h2>
+    <p>A proposition is a statement that can be true or false. In logic, we combine them with connectors:</p>
+    <ul>
+      <li><b>∧</b> (and)</li>
+      <li><b>∨</b> (or)</li>
+      <li><b>→</b> (implies)</li>
+      <li><b>↔</b> (if and only if)</li>
+    </ul>
+    <div class="example">Example: <b>A ∧ B</b> means “A and B are both true.”</div>
+  </div>
+
+  <div class="section">
+    <h2>Step 2: Make Assumptions</h2>
+    <p>Sometimes, to prove a conditional, we assume the antecedent and see what follows.</p>
+    <div class="example">Example: Assume <b>A</b>. If you can derive <b>B</b>, then you can conclude <b>A → B</b>.</div>
+  </div>
+
+  <div class="section">
+    <h2>Step 3: Apply Rules</h2>
+    <p>Use inference rules to derive new lines:</p>
+    <ul>
+      <li><b>∧E</b> (And Elimination): From <b>A ∧ B</b>, you can derive <b>A</b> or <b>B</b>.</li>
+      <li><b>∧I</b> (And Introduction): From <b>A</b> and <b>B</b>, you can derive <b>A ∧ B</b>.</li>
+      <li><b>→E</b> (Conditional Elimination / Modus Ponens): From <b>A → B</b> and <b>A</b>, you can derive <b>B</b>.</li>
+      <li><b>↔E</b> (Biconditional Elimination): From <b>A ↔ B</b> and <b>A</b>, you can derive <b>B</b>.</li>
+    </ul>
+    <div class="example">Example: Given <b>A ∧ B</b>, apply ∧E to derive <b>A</b>.</div>
+  </div>
+
+  <div class="section">
+    <h2>Step 4: Build the Proof</h2>
+    <p>Write each line, mark assumptions, and show which rules you used. When assumptions are discharged, you can conclude conditionals.</p>
+    <div class="example">Example Proof:<br>
+      1. A ∧ B (Premise)<br>
+      2. A (from 1, ∧E)<br>
+    </div>
+  </div>
+
+  <a class="back-btn" href="index.html">🏛 Back to Home</a>
+
+  <div class="quote">
+    “Logic is the beginning of wisdom, not the end.” — Socrates
+  </div>
+</body>
+</html>-->

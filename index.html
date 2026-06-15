@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Philosopher’s Logic Calculator</title>
+  <style>
+    body {
+      font-family: 'Garamond', serif;
+      background: #fdf6e3;
+      color: #3b2f2f;
+      text-align: center;
+      padding: 60px;
+      line-height: 1.6;
+    }
+    h1 {
+      font-size: 42px;
+      color: #5c4033;
+      margin-bottom: 40px;
+      text-shadow: 1px 1px #d4c2a8;
+    }
+    .nav-btn {
+      display: inline-block;
+      margin: 20px;
+      padding: 15px 30px;
+      font-size: 20px;
+      border: 2px solid #5c4033;
+      border-radius: 10px;
+      background: #fffaf0;
+      color: #5c4033;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      font-family: 'Georgia', serif;
+    }
+    .nav-btn:hover {
+      background: #5c4033;
+      color: #fdf6e3;
+    }
+    .quote {
+      margin-top: 50px;
+      font-style: italic;
+      color: #6b4c3b;
+    }
+    .nav {
+      display: flex;            /* turn on flexbox */
+      flex-direction: column;   /* stack children vertically */
+      align-items: center;      /* center them horizontally */
+      gap: 20px;
+    } 
+  </style>
+</head>
+<body>
+  <h1>🏛 The Philosopher’s Logic Calculator</h1>
+  <div class="nav">
+    <a class="nav-btn" href="practice.html">📜 Practice Problems</a>
+    <a class="nav-btn" href="custom.html">⚖ Create Your Own Proofs</a>
+    <a class="nav-btn" href="tutorial.html">📖 Tutorial</a>
+  </div>
+  <div class="quote">
+    “Logic is the anatomy of thought.” — John Locke
+  </div>
+
+  <div class="legend">
+  <h2>Logic Symbol Guide</h2>
+  <ul style="list-style: none; padding: 0; margin: 0;">
+    <li>&amp; : ∧ (AND)</li>
+    <li>&gt; : → (Conditional)</li>
+    <li>= : ↔ (Biconditional)</li>
+    <li>^ : ∨ (OR)</li>
+    <li>- : ¬ (NOT)</li>
+  </ul>
+</div>
+</body>
+</html>
+
+
+
+<!--
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Two Numbers</title>
+    <style>
+      body { font-family: sans-serif; padding: 20px; }
+      input { margin: 5px; width: 100px; }
+    </style>
+  </head>
+  <body>
+    
+
+    
+    <h1>Give a Proposition</h1>
+    <input id="prop1" type="text" placeholder="Write here" />
+    <button onclick="makeProposition()">Add Proposition</button>
+
+    <h1>Make Assumption</h1>
+    <input id="assumption" type="text" placeholder="Assume something" />
+    <button onclick="makeAssumption()">Assume</button>
+
+    <h3>Derive Lines</h3>
+    <input id="newLine" type="text" placeholder="Derived proposition" />
+    <input id="fromLines" type="text" placeholder="From lines (e.g. 1,2)" />
+    <input id="fromRule" type="text" placeholder="Rule (&E, &I, >E)" />
+    <button onclick="deriveProposition()">Derive</button>
+
+    <h2>Proof</h2>
+    <div id="displayArgument"></div>
+    
+  
+    
+    <a href = "testPage.html?prop=A%26B"> BOOM</a>
+    
+ 
+
+      <script src="./renderer.js"></script>
+  </body>
+</html>
+-->

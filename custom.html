@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Philosophical Logic Calculator</title>
+  <style>
+    body {
+      font-family: 'Garamond', serif;
+      background: #fdf6e3;
+      color: #3b2f2f;
+      padding: 30px;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #5c4033;
+      border-bottom: 2px solid #d4c2a8;
+      padding-bottom: 5px;
+      margin-top: 25px;
+    }
+    input {
+      background: #fffaf0;
+      border: 1px solid #d4c2a8;
+      color: #3b2f2f;
+      padding: 8px;
+      margin: 5px;
+      border-radius: 6px;
+      width: 250px;
+      font-family: 'Georgia', serif;
+    }
+    button {
+      background: #5c4033;
+      border: none;
+      color: #fdf6e3;
+      padding: 8px 15px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-family: 'Georgia', serif;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #8b5e3c;
+    }
+    .proof-board {
+      background: #fffaf0;
+      border: 2px solid #d4c2a8;
+      padding: 20px;
+      margin-top: 20px;
+      height: 300px;
+      overflow-y: auto;
+      font-size: 18px;
+      font-family: 'Georgia', serif;
+      box-shadow: inset 0 0 10px #d4c2a8;
+    }
+    .line {
+      margin: 8px 0;
+    }
+    .assumed {
+      color: #8b0000;
+      font-style: italic;
+    }
+    .nav {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .nav a {
+      color: #5c4033;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+        .proof-line {
+  font-family: monospace;
+  margin: 4px 0;
+}
+
+.scope {
+  border-left: 3px solid #444;   /* vertical line down the whole scope */
+  margin-left: 12px;
+  padding-left: 8px;
+  padding-bottom: 6px;
+  position: relative;
+}
+
+.scope .proof-line:first-child {
+  border-bottom: 2px solid #444; /* horizontal line under the assumption */
+  padding-bottom: 2px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="index.html">🏛 Home</a>
+    <a href="practice.html">📜 Practice Problems</a>
+    <a href="custom.html">⚖ Custom Proofs</a>
+    <a href="tutorial.html">📖 Tutorial</a>
+  </div>
+
+  
+  <h1>⚖ The Philosopher’s Logic Calculator</h1>
+
+  <h2>Give a Proposition</h2>
+<input id="prop1" type="text" placeholder="Write proposition (e.g. A&B)" />
+<button onclick="makeProposition()">Add Proposition</button>
+
+<h2>Make Assumption</h2>
+<input id="assumption" type="text" placeholder="Assume something (e.g. A)" />
+<button onclick="makeAssumption()">Assume</button>
+
+<h3>Derive Lines</h3>
+<input id="newLine" type="text" placeholder="Derived proposition (e.g. A&B)" />
+<input id="fromLines" type="text" placeholder="From lines (e.g. 1,2)" />
+<input id="fromRule" type="text" 
+       placeholder="Rule (&E, &I, >E, >I, =E, =I, ^I, ^E)" />
+<button onclick="deriveProposition()">Derive</button>
+
+<h3>Edit</h3>
+<button onclick="undoLastLine()">Erase Last Line</button>
+
+
+<h2>Proof</h2>
+<div id="errorMessage" role="alert" style="
+  display:none;
+  background:#ffecec;
+  color:#a94442;
+  border:1px solid #f5c6cb;
+  padding:10px;
+  margin:10px 0;
+  border-radius:6px;
+  font-family: Georgia, serif;
+"></div>
+<div id="displayArgument" class="proof-board"></div>
+
+  <script src="./renderer.js"></script>
+</body>
+</html>
